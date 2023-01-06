@@ -1,5 +1,5 @@
 name: jest-eslint-tests
-on: push:
+on: push
 jobs:
   tests:
     runs-on: ubuntu-latest
