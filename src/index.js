@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import fs from 'node:fs';
 import _ from 'lodash';
 
@@ -19,6 +18,8 @@ export default (filepath1, filepath2) => {
 
   const combined = [...first, ...second];
   const sorted = _.sortBy(combined, (arr) => arr[1]);
-  const result = sorted.map(([sign, key, value]) => `${sign} ${key}: ${value}`);
-  console.log(result.join('\n'));
+  const entries = sorted.map(([sign, key, value]) => [`${sign} ${key}`, value]);
+  const result = JSON.stringify(Object.fromEntries(entries), null, ' ');
+  console.log(result);
+  return result;
 };
