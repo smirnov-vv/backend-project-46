@@ -1,0 +1,5 @@
+/node_modules/
+
+# files for local test
+/src/file1.json
+/src/file2.json
