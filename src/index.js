@@ -1,9 +1,9 @@
-import fs from 'node:fs';
 import _ from 'lodash';
+import parser from './parsers.js';
 
 export default (filepath1, filepath2) => {
-  const file1 = JSON.parse(fs.readFileSync(filepath1, { encoding: 'utf8' }));
-  const file2 = JSON.parse(fs.readFileSync(filepath2, { encoding: 'utf8' }));
+  const file1 = parser(filepath1);
+  const file2 = parser(filepath2);
   const file1PairsList = Object.entries(file1);
   const file2PairsList = Object.entries(file2);
 
