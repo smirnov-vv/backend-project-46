@@ -20,15 +20,20 @@ beforeAll(() => {
   file3 = getFixturePath('file3.test');
 });
 
-test('main', () => {
-  const file1AsObject = JSON.parse(readFile('expected_file1.json'));
-  expect(main(file1, file2)).toBe(JSON.stringify(file1AsObject, null, ' '));
+test('stylish', () => {
+  const forwardOrder = readFile('expected_file1.txt');
+  expect(main(file1, file2, 'stylish')).toEqual(forwardOrder);
 
-  const file2AsObject = JSON.parse(readFile('expected_file2.json'));
-  expect(main(file2, file1)).toBe(JSON.stringify(file2AsObject, null, ' '));
+  const reversedOrder = readFile('expected_file2.txt');
+  expect(main(file2, file1, 'stylish')).toEqual(reversedOrder);
 });
 
-test('unknown format', () => {
+test('file extension is unknown', () => {
   jest.spyOn(process, 'exit').mockImplementation(() => {});
-  expect(() => main(file1, file3)).toThrow();
+  expect(() => main(file1, file3, 'stylish')).toThrow();
+});
+
+test('provided format is unknown', () => {
+  jest.spyOn(process, 'exit').mockImplementation(() => {});
+  expect(() => main(file1, file2, 'any_unknown')).toThrow();
 });

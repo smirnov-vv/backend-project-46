@@ -1,25 +1,102 @@
 import _ from 'lodash';
 import parser from './parsers.js';
+import formater from './formater.js';
 
-export default (filepath1, filepath2) => {
+const isObject = (element) => (typeof element === 'object') && (!Array.isArray(element)) && (element !== null);
+
+const hasAncestorStatus = (ancestorStatuses) => {
+  const statuses = ['added', 'deleted'];
+  return statuses.some((status1) => ancestorStatuses.some((status2) => status1 === status2));
+};
+
+const compareFn = (firstNode, secondNode) => {
+  if (firstNode.key < secondNode.key) {
+    return -1;
+  }
+  if (firstNode.key > secondNode.key) {
+    return 1;
+  }
+  return 0;
+};
+
+const conditions = [
+  (obj1, obj2, key) => (Object.hasOwn(obj1, key) && !Object.hasOwn(obj2, key)), // 1st obj has key
+  (obj1, obj2, key) => (!Object.hasOwn(obj1, key) && Object.hasOwn(obj2, key)), // 2nd obj has key
+  (obj1, obj2, key) => (isObject(obj1[key]) && isObject(obj2[key])), // Both values are objects
+  (obj1, obj2, key) => (isObject(obj1[key])), // First object value is object, second is not
+  (obj1, obj2, key) => (isObject(obj2[key])), // Second object value is object, first is not
+  (obj1, obj2, key) => (obj1[key] === obj2[key]), // Both values aren't objects and they are equal
+  (obj1, obj2, key) => (obj1[key] !== obj2[key]), // Both values aren't objects and they arent equal
+];
+
+const makeNode = {
+  0: (obj1, obj2, key, makeDiff, node, ancestorStatuses) => {
+    const type = isObject(obj1[key]) ? 'ancestor' : 'leaf';
+    const status = hasAncestorStatus(ancestorStatuses) ? 'inner' : 'deleted';
+    const updatedNode = { ...node, type, status };
+    return type === 'ancestor'
+      ? { ...updatedNode, value: makeDiff(obj1[key], {}, [...ancestorStatuses, status]) }
+      : { ...updatedNode, value: obj1[key] };
+  },
+
+  1: (obj1, obj2, key, makeDiff, node, ancestorStatuses) => {
+    const type = isObject(obj2[key]) ? 'ancestor' : 'leaf';
+    const status = hasAncestorStatus(ancestorStatuses) ? 'inner' : 'added';
+    const updatedNode = { ...node, type, status };
+    return type === 'ancestor'
+      ? { ...updatedNode, value: makeDiff({}, obj2[key], [...ancestorStatuses, status]) }
+      : { ...updatedNode, value: obj2[key] };
+  },
+
+  2: (obj1, obj2, key, makeDiff, node, ancestorStatuses) => (
+    { ...node, type: 'ancestor', value: makeDiff(obj1[key], obj2[key], ancestorStatuses) }
+  ),
+
+  3: (obj1, obj2, key, makeDiff, node, ancestorStatuses) => {
+    const prevNode = { ...node, status: 'deleted' };
+    const nextNode = { ...node, status: 'added' };
+    return [
+      { ...prevNode, type: 'ancestor', value: makeDiff(obj1[key], {}, [...ancestorStatuses, 'deleted']) },
+      { ...nextNode, value: obj2[key] },
+    ];
+  },
+
+  4: (obj1, obj2, key, makeDiff, node, ancestorStatuses) => {
+    const prevNode = { ...node, status: 'deleted' };
+    const nextNode = { ...node, status: 'added' };
+    return [
+      { ...prevNode, value: obj1[key] },
+      { ...nextNode, type: 'ancestor', value: makeDiff({}, obj2[key], [...ancestorStatuses, 'added']) },
+    ];
+  },
+
+  5: (obj1, obj2, key, makeDiff, node) => ({ ...node, value: obj1[key] }),
+
+  6: (obj1, obj2, key, makeDiff, node) => [
+    { ...node, status: 'deleted', value: obj1[key] },
+    { ...node, status: 'added', value: obj2[key] },
+  ],
+};
+
+export default (filepath1, filepath2, format) => {
   const file1 = parser(filepath1);
   const file2 = parser(filepath2);
-  const file1PairsList = Object.entries(file1);
-  const file2PairsList = Object.entries(file2);
 
-  const first = file1PairsList.map(([key1, value1]) => {
-    const isAllEqual = file2PairsList.some(([key2, value2]) => key1 === key2 && value1 === value2);
-    return isAllEqual ? [' ', key1, value1] : ['-', key1, value1];
-  });
+  const makeDiff = (obj1, obj2, ancestorStatuses = []) => {
+    const obj1Keys = Object.keys(obj1);
+    const obj2Keys = Object.keys(obj2);
+    const uniqKeys = _.uniq([...obj1Keys, ...obj2Keys]);
+    const diffTree = uniqKeys.flatMap((key) => {
+      const funcIndex = conditions.findIndex((condition) => condition(obj1, obj2, key));
+      const node = { key, type: 'leaf', status: 'common' };
+      return makeNode[funcIndex](obj1, obj2, key, makeDiff, node, ancestorStatuses);
+    }).sort(compareFn);
 
-  const second = file2PairsList.filter(([key2, value2]) => !file1PairsList
-    .some(([key1, value1]) => key1 === key2 && value1 === value2))
-    .map(([key2, value2]) => ['+', key2, value2]);
+    return diffTree;
+  };
 
-  const combined = [...first, ...second];
-  const sorted = _.sortBy(combined, (arr) => arr[1]);
-  const entries = sorted.map(([sign, key, value]) => [`${sign} ${key}`, value]);
-  const result = JSON.stringify(Object.fromEntries(entries), null, ' ');
+  const diff = makeDiff(file1, file2);
+  const result = formater(diff, format);
   console.log(result);
   return result;
 };
