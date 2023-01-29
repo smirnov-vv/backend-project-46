@@ -13,7 +13,7 @@ export default (formatName) => {
   const isFormatRight = possibleFormats.includes(formatName);
   if (!isFormatRight) {
     console.log(`Format "${formatName}" is unknown\n`);
-    process.exit();
+    return;
   }
 
   return format[formatName];

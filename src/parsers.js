@@ -13,7 +13,7 @@ export default (filepath) => {
   } else {
     parse = () => {
       console.log(`Extension "${extension}" is unknown, please provide .json, .yml or .yaml\n`);
-      process.exit();
+      return;
     };
   }
   return parse(data);
