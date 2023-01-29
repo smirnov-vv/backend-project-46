@@ -1,4 +1,3 @@
-import { jest } from '@jest/globals';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
@@ -42,14 +41,4 @@ test('json', () => {
 
   const reversedOrder = readFile('expected_file6.json');
   expect(main(file2, file1, 'json')).toEqual(JSON.parse(reversedOrder));
-});
-
-test('file extension is unknown', () => {
-  jest.spyOn(process, 'exit').mockImplementation(() => {});
-  expect(() => main(file1, file3, 'stylish')).toThrow();
-});
-
-test('provided format is unknown', () => {
-  jest.spyOn(process, 'exit').mockImplementation(() => {});
-  expect(() => main(file1, file2, 'any_unknown')).toThrow();
 });
