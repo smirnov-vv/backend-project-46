@@ -77,7 +77,8 @@ export default (filepath1, filepath2, formatName = 'stylish') => {
     const obj1Keys = Object.keys(obj1);
     const obj2Keys = Object.keys(obj2);
     const uniqKeys = _.uniq([...obj1Keys, ...obj2Keys]);
-    const diffTree = uniqKeys.sort()
+    const sortedKeys = _.sortBy(uniqKeys);
+    const diffTree = sortedKeys
       .flatMap((key) => {
         const funcIndex = conditions.findIndex((condition) => condition(obj1, obj2, key));
         const node = { key, type: 'leaf', status: 'common' };
