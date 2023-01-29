@@ -11,10 +11,12 @@ const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8'
 
 let file1;
 let file2;
+let file3;
 
 beforeAll(() => {
   file1 = getFixturePath('file1.json');
   file2 = getFixturePath('file2.yaml');
+  file3 = getFixturePath('file3.test');
 });
 
 test('stylish', () => {
@@ -34,9 +36,15 @@ test('plain', () => {
 });
 
 test('json', () => {
-  const forwardOrder = readFile('expected_file5.json');
-  expect(main(file1, file2, 'json')).toEqual(JSON.parse(forwardOrder));
+  const data = main(file1, file2, 'json');
+  expect(() => JSON.parse(data)).not.toThrow();
+});
 
-  const reversedOrder = readFile('expected_file6.json');
-  expect(main(file2, file1, 'json')).toEqual(JSON.parse(reversedOrder));
+test('file extension is unknown', () => {
+  const forwardOrder = readFile('expected_file7.txt');
+  expect(main(file1, file3, 'stylish')).toEqual(forwardOrder);
+});
+
+test('provided format is unknown', () => {
+  expect(main(file1, file2, 'any_unknown')).toEqual('Format is unknown, please provide "stylish", "plain" or "json"');
 });

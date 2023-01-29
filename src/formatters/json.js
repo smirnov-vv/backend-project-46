@@ -1,1 +1,1 @@
-export default (diff) => JSON.parse(JSON.stringify(diff));
+export default (diff) => JSON.stringify(diff);
