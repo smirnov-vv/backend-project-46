@@ -28,6 +28,14 @@ test('stylish', () => {
   expect(main(file2, file1, 'stylish')).toEqual(reversedOrder);
 });
 
+test('plain', () => {
+  const forwardOrder = readFile('expected_file3.txt');
+  expect(main(file1, file2, 'plain')).toEqual(forwardOrder);
+
+  const reversedOrder = readFile('expected_file4.txt');
+  expect(main(file2, file1, 'plain')).toEqual(reversedOrder);
+});
+
 test('file extension is unknown', () => {
   jest.spyOn(process, 'exit').mockImplementation(() => {});
   expect(() => main(file1, file3, 'stylish')).toThrow();
