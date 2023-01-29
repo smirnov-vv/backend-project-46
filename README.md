@@ -6,3 +6,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/55bf3bd701afd6e054c3/maintainability)](https://codeclimate.com/github/smirnov-vv/backend-project-46/maintainability)
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/55bf3bd701afd6e054c3/test_coverage)](https://codeclimate.com/github/smirnov-vv/backend-project-46/test_coverage)
+
+## Example
+
+[![asciicast](https://asciinema.org/a/555493.svg)](https://asciinema.org/a/555493)
