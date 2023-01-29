@@ -9,15 +9,9 @@ const __dirname = path.dirname(__filename);
 const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
 
-let file1;
-let file2;
-let file3;
-
-beforeAll(() => {
-  file1 = getFixturePath('file1.json');
-  file2 = getFixturePath('file2.yaml');
-  file3 = getFixturePath('file3.test');
-});
+const file1 = getFixturePath('file1.json');
+const file2 = getFixturePath('file2.yaml');
+const file3 = getFixturePath('file3.test');
 
 test('stylish', () => {
   const forwardOrder = readFile('expected_file1.txt');
