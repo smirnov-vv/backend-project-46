@@ -1,0 +1,191 @@
+[
+    {
+      "key": "common",
+      "type": "ancestor",
+      "status": "common",
+      "value": [
+        {
+          "key": "follow",
+          "type": "leaf",
+          "status": "deleted",
+          "value": false
+        },
+        {
+          "key": "setting1",
+          "type": "leaf",
+          "status": "common",
+          "value": "Value 1"
+        },
+        {
+          "key": "setting2",
+          "type": "leaf",
+          "status": "added",
+          "value": 200
+        },
+        {
+          "key": "setting3",
+          "type": {
+            "old": "leaf",
+            "new": "leaf"
+          },
+          "status": "updated",
+          "oldValue": null,
+          "newValue": true
+        },
+        {
+          "key": "setting4",
+          "type": "leaf",
+          "status": "deleted",
+          "value": "blah blah"
+        },
+        {
+          "key": "setting5",
+          "type": "ancestor",
+          "status": "deleted",
+          "value": [
+            {
+              "key": "key5",
+              "type": "leaf",
+              "status": "inner",
+              "value": "value5"
+            }
+          ]
+        },
+        {
+          "key": "setting6",
+          "type": "ancestor",
+          "status": "common",
+          "value": [
+            {
+              "key": "doge",
+              "type": "ancestor",
+              "status": "common",
+              "value": [
+                {
+                  "key": "wow",
+                  "type": {
+                    "old": "leaf",
+                    "new": "leaf"
+                  },
+                  "status": "updated",
+                  "oldValue": "so much",
+                  "newValue": ""
+                }
+              ]
+            },
+            {
+              "key": "key",
+              "type": "leaf",
+              "status": "common",
+              "value": "value"
+            },
+            {
+              "key": "ops",
+              "type": "leaf",
+              "status": "deleted",
+              "value": "vops"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "group1",
+      "type": "ancestor",
+      "status": "common",
+      "value": [
+        {
+          "key": "baz",
+          "type": {
+            "old": "leaf",
+            "new": "leaf"
+          },
+          "status": "updated",
+          "oldValue": "bars",
+          "newValue": "bas"
+        },
+        {
+          "key": "foo",
+          "type": "leaf",
+          "status": "common",
+          "value": "bar"
+        },
+        {
+          "key": "nest",
+          "type": {
+            "old": "leaf",
+            "new": "ancestor"
+          },
+          "status": "updated",
+          "oldValue": "str",
+          "newValue": [
+            {
+              "key": "key",
+              "type": "leaf",
+              "status": "inner",
+              "value": "value"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "group2",
+      "type": "ancestor",
+      "status": "added",
+      "value": [
+        {
+          "key": "abc",
+          "type": "leaf",
+          "status": "inner",
+          "value": 12345
+        },
+        {
+          "key": "deep",
+          "type": "ancestor",
+          "status": "inner",
+          "value": [
+            {
+              "key": "id",
+              "type": "leaf",
+              "status": "inner",
+              "value": 45
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "group3",
+      "type": "ancestor",
+      "status": "deleted",
+      "value": [
+        {
+          "key": "deep",
+          "type": "ancestor",
+          "status": "inner",
+          "value": [
+            {
+              "key": "id",
+              "type": "ancestor",
+              "status": "inner",
+              "value": [
+                {
+                  "key": "number",
+                  "type": "leaf",
+                  "status": "inner",
+                  "value": 45
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "fee",
+          "type": "leaf",
+          "status": "inner",
+          "value": 100500
+        }
+      ]
+    }
+]

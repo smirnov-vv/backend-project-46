@@ -29,11 +29,19 @@ test('stylish', () => {
 });
 
 test('plain', () => {
-  const forwardOrder = readFile('expected_file3.txt');
+  const forwardOrder = readFile('expected_file3.plain');
   expect(main(file1, file2, 'plain')).toEqual(forwardOrder);
 
-  const reversedOrder = readFile('expected_file4.txt');
+  const reversedOrder = readFile('expected_file4.plain');
   expect(main(file2, file1, 'plain')).toEqual(reversedOrder);
+});
+
+test('json', () => {
+  const forwardOrder = readFile('expected_file5.json');
+  expect(main(file1, file2, 'json')).toEqual(JSON.parse(forwardOrder));
+
+  const reversedOrder = readFile('expected_file6.json');
+  expect(main(file2, file1, 'json')).toEqual(JSON.parse(reversedOrder));
 });
 
 test('file extension is unknown', () => {
