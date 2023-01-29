@@ -69,7 +69,7 @@ const makeNode = {
   }),
 };
 
-export default (filepath1, filepath2, formatName) => {
+export default (filepath1, filepath2, formatName = 'stylish') => {
   const file1 = parser(filepath1);
   const file2 = parser(filepath2);
 

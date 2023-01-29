@@ -11,12 +11,10 @@ const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8'
 
 let file1;
 let file2;
-let file3;
 
 beforeAll(() => {
   file1 = getFixturePath('file1.json');
   file2 = getFixturePath('file2.yaml');
-  file3 = getFixturePath('file3.test');
 });
 
 test('stylish', () => {
